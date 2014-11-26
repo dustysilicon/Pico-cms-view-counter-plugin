@@ -7,7 +7,9 @@ class Views_counter {
     public function before_render(&$twig_vars, &$twig, &$template)
 	{
 		// Add a custom template variable
-        $twig_vars['my_views_var'] = set_Reads();
+        $v = set_Reads();
+        $twig_vars['view_count_formatted'] = number_format((float) $v);
+        $twig_vars['view_count_raw'] = $v;
 	}
     
     public function file_meta(&$meta) {
