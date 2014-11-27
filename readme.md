@@ -31,13 +31,17 @@ or formatted with comma's:
     {{ view_count_formatted }}
    
 
-Added template variable {{ my_date_var }}
+Added template variable {{ view_current_year }}
 
 Example: 
 
     code
     
-    Copyright &copy; {{ my_date_var }}
+    Copyright &copy; {{ view_current_year }}
+
+#Notes:
+
+Added file locking (flock) to handle busy sites and keep the count.txt file. The plugin will lock errors and counts to the counter.txt file and you can view them by opening the raw file.
 
 ## License
 Free
