@@ -1,17 +1,17 @@
 <?php
 
-$current_Page; // global current page holding var.
+$current_Page; // Current Page Title
     
 class Views_counter {
 
     public function before_render(&$twig_vars, &$twig, &$template)
 	{
 		// Add a custom template variable
-        $v = set_Reads();
+        $v = set_Reads(); // Get number of reads/views from counter.txt
         $twig_vars['view_count_formatted'] = number_format((float) $v);
         $twig_vars['view_count_raw'] = $v;
 	}
-    
+    // Get current page title
     public function file_meta(&$meta) {
         global $current_Page;
         
@@ -26,20 +26,21 @@ function set_Reads() {
     // array for holding counter file contents
     $file_data[] = '';
     
-    // open counter file
-    $fd = fopen('./counter.txt', 'r+');
+    // open counter file for reading
+    $fd = fopen('./counter.txt', 'r');
     if (!$fd) {
-        echo "Error opening counter.txt";
+        echo "Error opening counter.txt -- views_counter";
         die;
         }
 
-    // Read counter text file
+    // Read counter.txt file
     $i = 0;
     while (($file_data[$i] = fgets($fd)) !== false) {
         $i++;
     }
     if (!feof($fd)) {
-        echo "Error: unexpected fgets() fail\n";
+        echo "Error: unexpected fgets() fail -- views_counter\n";
+        die;
     }
     
     // Find matching page tile and current counter value
@@ -49,14 +50,14 @@ function set_Reads() {
         // found a match so we get the next value which is our counter
         if ($next_val) {
             $inc = $value + 1;
-            $value = (string) $inc . "\r\n";
+            $value = (string) $inc . "\r\n"; // Important, add carriage return and line feed to string
             $counter_val = $value;
             $next_val = false;
         }
         // find a match
         if (strcmp(trim($current_Page), trim($value)) == 0) {
             // echo '<h4>Match! ' . $value . '& ' . $current_Page . '</h4>';
-            $next_val = true;
+            $next_val = true; // next value is our count number
             }
     }
     // Page is not found, so we create one and start counter at 1
@@ -67,23 +68,20 @@ function set_Reads() {
         $counter_val = '1';
         }
         
-    fclose($fd);
+    fclose($fd); // done, close file
     
      // open counter file and re-write
     $fd = fopen('./counter.txt', 'w');
     if (!$fd) {
-        echo "Error opening counter.txt";
+        echo "Error opening counter.txt -- views_counter";
         die;
         }
     foreach ($file_data as &$value) {
-        // echo $value . '<br>';
-        // echo gettype($value) . '<br>';
         fwrite($fd, (string) $value);
         }
+
     // close counter file
     fclose($fd);
-    
-    // echo '<h1>' . $current_Page . ' - Counter Value: ' . $counter_val . '</h1>';
     
     return ($counter_val);
 }
