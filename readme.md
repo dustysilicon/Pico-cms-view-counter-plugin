@@ -41,7 +41,8 @@ Example:
 
 ###Note:
 
-Added file locking (flock) to handle busy sites and keep the count.txt file. The plugin will lock errors and counts to the counter.txt file and you can view them by opening the raw file.
+Added file locking (flock) to handle busy sites and keep the count.txt file.
+Added fflush to clear buffers before unlocking file. (bug)
 
 ### License
 Free
