@@ -30,7 +30,7 @@ function set_Reads() {
     // open counter file for reading
     $fd = fopen('./counter.txt', 'r');
     if (!$fd) {
-        return("Open Error - read");
+        die;
         }
 
     if (flock($fd, LOCK_EX)) // lock file for reading
@@ -41,7 +41,7 @@ function set_Reads() {
             $i++;
         }
         if (!feof($fd)) {
-            return("Fgets Error - read");
+            die;
         }
         
         // Find matching page tile and current counter value
@@ -68,10 +68,11 @@ function set_Reads() {
             $file_data[] = '1' . "\r\n";
             $counter_val = '1';
             }
+        fflush($fd);
         flock($fd, LOCK_UN); // unlock file.
     } else {
         fclose($fd);
-        return("Lock Error - read");
+        die;
         } // lock for read failed, exit.
     
     fclose($fd); // done, close file
@@ -79,7 +80,7 @@ function set_Reads() {
      // open counter file and re-write
     $fd = fopen('./counter.txt', 'w');
     if (!$fd) {
-        return("Open Error - write");
+        die;
         }
     if (flock($fd, LOCK_EX)) // lock for write
     {
@@ -88,9 +89,10 @@ function set_Reads() {
             }
     } else {
         fclose($fd);
-        return("Lock Error - Write");
+        die;
         }
 
+    fflush($fd);
     flock($fd, LOCK_UN); // unlock 
     
     // close counter file
