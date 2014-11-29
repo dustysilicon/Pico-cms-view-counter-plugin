@@ -1,4 +1,10 @@
 <?php
+/*  View_Counter - Adds view/read counter to your site pages.
+    Plugin for PICO CMS, Blazingly fast!
+    Author: Dennis Raney
+    Date: 11/28/14
+    Instructions: See readme.md file for help or on github https://github.com/dustysilicon/Pico-cms-view-counter-plugin
+*/
 
 $current_Page; // Current Page Title
     
